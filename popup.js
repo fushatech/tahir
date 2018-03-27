@@ -4,7 +4,7 @@
  * @description
  *   - Displays popup modal with current GAB settings
  *   - If user updates settings: (1) settings saved (2) updated settings sent to tab.js to update active tab blur CSS.
- *  
+ *
  */
 
 
@@ -20,18 +20,18 @@ initPopup();
 /*------------------------------------------------------------------
   Implementation -- Main Functions
 -------------------------------------------------------------------*/
-  
+
 /* initPopup - (1) Gets local storage settings (2) After DOM load, displays settings in modal & adds listeners to receive user input */
 function initPopup () {
   getSettings().then (function () {
    if (document.readyState === "complete" || "interactive") {
-      displaySettings(settings)   
-      addListeners() 
+      displaySettings(settings)
+      addListeners()
     }
     else {
       document.addEventListener("DOMContentLoaded", function () {
-        displaySettings(settings)   
-        addListeners()    
+        displaySettings(settings)
+        addListeners()
       })
     }
   })
@@ -45,10 +45,10 @@ function initPopup () {
 /* getSettings - (1) Gets local storage settings, (2) sets local settings var to local storage settings, (3) resolves promise when complete  */
 function getSettings () {
   return new Promise(function(resolve) {
-      chrome.storage.sync.get(['settings'], function(storage) {
+      browser.storage.sync.get(['settings'], function(storage) {
       settings = storage.settings
       resolve()
-    });   
+    });
   });
 }
 
@@ -81,7 +81,7 @@ function addListeners () {
 /* updateStatus - (1) Update "status" settings with user input (2) save settings (3) send updated settings to tab.js to modify active tab blur css */
 function updateStatus () {
     settings.status = document.querySelector("input[name=status]").checked
-    chrome.storage.sync.set({"settings": settings}) 
+    browser.storage.sync.set({"settings": settings})
     sendUpdatedSettings()
 }
 
@@ -90,7 +90,7 @@ function updateStatus () {
 function updateBluramt () {
   settings.blurAmt = document.querySelector("input[name=bluramt]").value
   document.querySelector("span[name=bluramttext]").innerHTML = settings.blurAmt + "px"
-  chrome.storage.sync.set({"settings": settings}) 
+  browser.storage.sync.set({"settings": settings})
   sendUpdatedSettings()
 }
 
@@ -98,7 +98,7 @@ function updateBluramt () {
 /* updateGrayscale - (1) Update "grayscale" settings with user input (2) save settings (3) send updated settings to tab.js to modify active tab blur css */
 function updateGrayscale () {
     settings.grayscale = document.querySelector("input[name=grayscale]").checked
-    chrome.storage.sync.set({"settings": settings}) 
+    browser.storage.sync.set({"settings": settings})
     sendUpdatedSettings()
 }
 
@@ -106,7 +106,7 @@ function updateGrayscale () {
 /* updateStatus - (1) Update "images" settings with user input (2) save settings (3) send updated settings to tab.js to modify active tab blur css */
 function updateImages () {
     settings.images = document.querySelector("input[name=images]").checked
-    chrome.storage.sync.set({"settings": settings}) 
+    browser.storage.sync.set({"settings": settings})
     sendUpdatedSettings()
 }
 
@@ -114,7 +114,7 @@ function updateImages () {
 /* updateStatus - (1) Update "videos" settings with user input (2) save settings (3) send updated settings to tab.js to modify active tab blur css */
 function updateVideos () {
     settings.videos = document.querySelector("input[name=videos]").checked
-    chrome.storage.sync.set({"settings": settings})   
+    browser.storage.sync.set({"settings": settings})
     sendUpdatedSettings()
 }
 
@@ -122,7 +122,7 @@ function updateVideos () {
 /* updateStatus - (1) Update "iframes" settings with user input (2) save settings (3) send updated settings to tab.js to modify active tab blur css */
 function updateIframes () {
     settings.iframes = document.querySelector("input[name=iframes]").checked
-    chrome.storage.sync.set({"settings": settings})   
+    browser.storage.sync.set({"settings": settings})
     sendUpdatedSettings()
 }
 
@@ -130,15 +130,15 @@ function updateIframes () {
 /* updateBgImages - (1) Update "iframes" settings with user input (2) save settings (3) send updated settings to tab.js to modify active tab blur css */
 function updateBGImages () {
     settings.bgImages = document.querySelector("input[name=bgimages]").checked
-    chrome.storage.sync.set({"settings": settings})   
+    browser.storage.sync.set({"settings": settings})
     sendUpdatedSettings()
 }
 
 
 /* sendUpdatedSettings - Send updated settings object to tab.js to modify active tab blur CSS */
 function sendUpdatedSettings () {
-    chrome.tabs.query({currentWindow: true, active: true}, function (tabs){
+    browser.tabs.query({currentWindow: true, active: true}, function (tabs){
     var activeTab = tabs[0];
-    chrome.tabs.sendMessage(activeTab.id, {"message": settings});
+    browser.tabs.sendMessage(activeTab.id, {"message": settings});
    });
 }
