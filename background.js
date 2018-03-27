@@ -10,24 +10,24 @@
 
 
 /* On extension installation, create default local storage settings */
-chrome.runtime.onInstalled.addListener (function(obj) {
+browser.runtime.onInstalled.addListener (function(obj) {
   if (obj.reason === "install") {
     const settings = {'type': 'settings', 'status': true, 'images': true, 'videos': true, 'iframes': true, 'blurAmt': 20, 'grayscale': true, 'bgImages': true}
-    chrome.storage.sync.set({'settings': settings})
+    browser.storage.sync.set({'settings': settings})
   }
 });
 
 
 /* On extension load, add listeners for user key commands: Alt+K, Alt+L & send appropriate message to active tab */
-chrome.commands.onCommand.addListener(function (command) {
+browser.commands.onCommand.addListener(function (command) {
     if (command === "reverse_status") {
-        chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
-    		chrome.tabs.sendMessage(tabs[0].id, {"message": "reverse_status"});  
+        browser.tabs.query({active: true, currentWindow: true}, function(tabs){
+    		browser.tabs.sendMessage(tabs[0].id, {"message": "reverse_status"});
 		});
     }
     if (command === "unblur_selected") {
-    	chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
-    		chrome.tabs.sendMessage(tabs[0].id, {"message": "reveal_selected"});  
+    	browser.tabs.query({active: true, currentWindow: true}, function(tabs){
+    		browser.tabs.sendMessage(tabs[0].id, {"message": "reveal_selected"});
 		});
     }
 });

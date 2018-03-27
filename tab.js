@@ -7,8 +7,8 @@
  *
  *
  *	Extension Features
- *		1. By default, all images, videos, iframes for all websites are blurred 
- *		2. Selectively reveal an image, video, iframe. 		
+ *		1. By default, all images, videos, iframes for all websites are blurred
+ *		2. Selectively reveal an image, video, iframe.
  *		3. Turn off default blurring (via: popup, key command)
  *		4. Customize blurring (bluramt, grayscale, img, video, iframe)
  *
@@ -19,7 +19,7 @@
 /*------------------------------------------------------------------
   Initialize Defaults & Add Listeners
 -------------------------------------------------------------------*/
- 
+
 var settings = null
 
 initTab()
@@ -30,40 +30,40 @@ initTab()
   Implementation -- Main Wrapper Function
 -------------------------------------------------------------------*/
 
-/* initTab - On document start: (1) gets local storage settings (2) generates & applies blur CSS (3) sets up listeners to receive and act on messages from popup.js/background.js */ 
+/* initTab - On document start: (1) gets local storage settings (2) generates & applies blur CSS (3) sets up listeners to receive and act on messages from popup.js/background.js */
 function initTab () {
 	getSettings().then (function () {
-		if (settings.status === true) { injectBlurCSS() } 
-		addListeners() 
+		if (settings.status === true) { injectBlurCSS() }
+		addListeners()
 	})
 }
 
 
 
 /*------------------------------------------------------------------
-  Implementation -- Helper Functions 
+  Implementation -- Helper Functions
 -------------------------------------------------------------------*/
 
 /* getSettings - (1) Gets local storage settings, (2) sets local settings var to local storage settings, (3) resolves promise when complete  */
 function getSettings () {
 	return new Promise(function(resolve) {
-		chrome.storage.sync.get(['settings'], function(storage) {
+		browser.storage.sync.get(['settings'], function(storage) {
 			settings = storage.settings
 			resolve()
-		});		
+		});
 	});
 }
 
 
 /* addListeners - (1) adds message listeners to receive specific messages from popup.js (popup modal) & background.js (key commands) & (2) routes to appropriate functions on receipt */
 function addListeners () {
-	chrome.runtime.onMessage.addListener(
+	browser.runtime.onMessage.addListener(
 	  function(request, sender, sendResponse) {
 	    if (request.message === 'reverse_status') { reverseStatus() }
 	    else if (request.message === 'reveal_selected') { revealSelected() }
 	    else if (request.message.type === 'settings') { updateCSS(request.message) }
 	  }
-	);	
+	);
 }
 
 
@@ -72,7 +72,7 @@ function injectBlurCSS () {
 	const style = document.createElement("style");
 	style.type = 'text/css';
 	style.rel = 'stylesheet';
-	style.id = "tahir" 
+	style.id = "tahir"
 	style.innerHTML = generateCssRules();
 	style.async = false;
 	document.documentElement.appendChild (style);
@@ -82,7 +82,7 @@ function injectBlurCSS () {
 /* removeBlurCSS - Removes injected blur CSS */
 function removeBlurCSS () {
 	const css = document.getElementById("tahir");
-	if (css) { css.parentNode.removeChild(css); }	
+	if (css) { css.parentNode.removeChild(css); }
 }
 
 
@@ -104,7 +104,7 @@ function generateCssRules () {
 /* updateCSS - (1) Gets updated local storage settings from popup.js (2) updates blur CSS accordingly */
 function updateCSS (updatedSettings) {
 	settings = updatedSettings
-	removeBlurCSS();		
+	removeBlurCSS();
 	if (settings.status === true) { injectBlurCSS() }
 }
 
@@ -112,9 +112,9 @@ function updateCSS (updatedSettings) {
 /* reverseStatus - (1) Reverses current status (2) saves this to settings (3) updates blur CSS accordingly  */
 function reverseStatus () {
 	settings.status = !settings.status
-	chrome.storage.sync.set({"settings": settings})
-	removeBlurCSS();		
-	if (settings.status === true) { injectBlurCSS() }		 
+	browser.storage.sync.set({"settings": settings})
+	removeBlurCSS();
+	if (settings.status === true) { injectBlurCSS() }
 }
 
 
@@ -130,17 +130,16 @@ function revealSelected () {
 		}
 	}
 
-	/* If element found, & is hidden element, reveal element: (1) if IMG, IFRAME, VIDEO --> set filter to blur 0px; (2) if DIV, SPAN, A, I --> append !important to background/background-image URL */ 
+	/* If element found, & is hidden element, reveal element: (1) if IMG, IFRAME, VIDEO --> set filter to blur 0px; (2) if DIV, SPAN, A, I --> append !important to background/background-image URL */
 	if (selected) {
 		if (selected.nodeName === 'IMG' || selected.nodeName === 'IFRAME' || selected.nodeName === 'VIDEO') { selected.style.cssText += ';filter: blur(0px) !important;' }
-		if (selected.nodeName === 'DIV' || selected.nodeName === 'SPAN' || selected.nodeName === 'A' || selected.nodeName === 'I') { 
+		if (selected.nodeName === 'DIV' || selected.nodeName === 'SPAN' || selected.nodeName === 'A' || selected.nodeName === 'I') {
 			var hasURL = selected.style.cssText.match(/url\(([^()]+)\)/)
 			var hasImportant = selected.style.cssText.match(/url\(([^(]+)\) !important/)
 			if (hasURL && !hasImportant) {
 				var updatedCSS = selected.style.cssText.replace(/url\(([^()]+)\)/, '$&' + ' !important');
-				selected.style.cssText = updatedCSS 			
+				selected.style.cssText = updatedCSS
 			}
 		}
 	}
 }
-
