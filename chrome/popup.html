@@ -1,0 +1,133 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Tahir</title>
+    <script src="popup.js"></script>  
+    <style media="screen" type="text/css">
+
+      .popup {
+        min-width:300px;
+      }
+
+      .title {
+        font-weight: 600;
+        font-size: 1.5rem;
+      }
+
+      .sub-title {
+        font-weight: 500;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        margin-top: 20px;
+      }
+
+      .status {
+        float: right;
+        width: 60px;
+        height: 30px;
+        border: 1px solid black;
+        border-radius: 0px;
+        position: relative;
+      }
+
+      .status:before {
+        content: 'On';
+        font-weight: 500;
+        font-size: 11px;
+        position: absolute;
+        top: 9px;
+        left: 10px;
+        height: 2px;
+        color: #26ca28;
+        
+      }
+
+      .status:after {
+        content: 'Off';
+        font-weight: 500;
+        font-size: 11px;
+        position: absolute;
+        top: 9px;
+        left: 35px;
+        height: 2px;
+        color: red;
+        
+      }
+
+      .status label {
+        display: block;
+        width: 20px;
+        height: 15px;
+        border-radius: 0px;
+        cursor: pointer;
+        position: absolute;
+        top: 8px;
+        z-index: 1;
+        left: 10px;
+        background: red;
+      }
+
+      .status input[type=checkbox]:checked + label {
+        left: 35px;
+        background: #26ca28;
+      }
+
+      .status input[type=checkbox] {
+          visibility: hidden; 
+        }
+
+      .bluramt {
+        height: 8.4px;
+      }
+
+      .images-videos-iframes {
+        margin-top: 4px; 
+        margin-bottom: 4px;
+      }
+
+      .grayscale {
+        margin-top: 4px;
+      }
+
+      .shortcuts {
+        margin-top: 2px;
+        font-size: 0.7rem;
+      }
+
+    </style> 
+  </head>
+  <body class="popup">
+
+    <div class="status">
+      <input type="checkbox" id="status" name="status" />
+      <label for="status"></label>
+    </div>
+
+    <h1 class="title">Tahir</h1>
+
+    <div class="sub-title"><span>Settings</span></div>
+
+    <div class="images-videos-iframes">
+      Images: <input type="checkbox" name="images" /> 
+      BG Images: <input type="checkbox" name="bgimages" />
+      Videos: <input type="checkbox" name="videos" /> 
+      iFrames: <input type="checkbox" name="iframes" /> 
+    </div>
+
+    <div>
+      Blur Amount: <input type="range" min="1" max="50" class="bluramt" name="bluramt" />  <span name="bluramttext"></span>
+    </div>
+
+    <div class="grayscale">
+      Grayscale: <input type="checkbox" name="grayscale" />
+    </div>
+
+    <div class="sub-title"><span>Shortcuts</span></div>
+
+    <div class="shortcuts">
+      <div><span>Alt+L: turn on / off </span></div>
+      <div><span>Alt+K: over image to selectively unblur (close this first)</span></div>
+    </div>
+    
+  </body>
+</html>
