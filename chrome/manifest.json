@@ -19,11 +19,11 @@
         },
         "description": "Reverse blur state"
     },
-    "unblur_selected": {
+    "toggle_selected": {
         "suggested_key": {
             "default": "Alt+K"
         },
-        "description": "Unblur selected image"
+        "description": "Unblur/reblur selected image"
     }
 },
   "background": {

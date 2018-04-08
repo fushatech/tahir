@@ -45,7 +45,7 @@ function initPopup () {
 /* getSettings - (1) Gets local storage settings, (2) sets local settings var to local storage settings, (3) resolves promise when complete  */
 function getSettings () {
   return new Promise(function(resolve) {
-      chrome.storage.sync.get(['settings'], function(storage) {
+    chrome.storage.sync.get(['settings'], function(storage) {
       settings = storage.settings
       resolve()
     });   
