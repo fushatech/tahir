@@ -1,7 +1,7 @@
 {
   "name": "Tahir",
   "description": "Avoid haram images & videos on the Internet.",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "permissions": [
   	"storage"
   ],
