@@ -6,12 +6,6 @@
  *   - Listens to popup.js (popup modal) & background.js (key commands) for updates & modifies blur CSS as needed.
  *
  *
- *	Extension Features
- *		1. By default, all images, videos, iframes for all websites are blurred 
- *		2. Selectively reveal an image, video, iframe. 		
- *		3. Turn off default blurring (via: popup, key command)
- *		4. Customize blurring (bluramt, grayscale, img, video, iframe)
- *
  */
 
 
@@ -60,7 +54,7 @@ function addListeners () {
 	chrome.runtime.onMessage.addListener(
 	  function(request, sender, sendResponse) {
 	    if (request.message === 'reverse_status') { reverseStatus() }
-	    else if (request.message === 'reveal_selected') { revealSelected() }
+	    else if (request.message === 'toggle_selected') { toggleSelected() }
 	    else if (request.message.type === 'settings') { updateCSS(request.message) }
 	  }
 	);	
@@ -95,7 +89,7 @@ function generateCssRules () {
 	if (settings.images === true) { cssRules += "img {filter: " + blurAmt + grayscale + "!important } "   }
 	if (settings.videos === true) { cssRules += "video {filter: " + blurAmt + grayscale + "!important } " }
 	if (settings.iframes === true) { cssRules += "iframe {filter: " + blurAmt + grayscale + "!important } " }
-	if (settings.bgImages === true) { cssRules += "div[style*='url'], span[style*='url'], a[style*='url'], i[style*='url'] {background-image: none !important; background-color: gray !important;}" }
+	if (settings.bgImages === true) { cssRules += "div[style*='url'], span[style*='url'], a[style*='url'], i[style*='url'] {filter: " + blurAmt + grayscale + "!important }" }
 
 	return cssRules
 }
@@ -118,29 +112,48 @@ function reverseStatus () {
 }
 
 
-/* revealSelected - Reveals blurred/hidden object under mouse hover */
-function revealSelected () {
+/* toggleSelected - (1) Determines objects over hover (2) reverses blur state of objects over hover  */
+function toggleSelected () {
 
-	/* Determine element user is clicking over */
+	/* Determine user hover */
 	const hover = document.querySelectorAll( ":hover" );
-	if (hover.length !== 0) {
-		var selected = hover[hover.length - 1]
-		while (selected.childNodes.length !== 0) {
-			selected = selected.childNodes[selected.childNodes.length - 1]
+	
+	/* Iterate through all elements under hover. If any element is an (1) IMG, IFRAME, VIDEO or (2) has a in-line background-url --> toggle */
+	hover.forEach(function (selected, iterator, array) {
+		if (selected.nodeName === 'IMG' || selected.nodeName === 'IFRAME' || selected.nodeName === 'VIDEO') { toggle(selected) }
+		else if (selected.style.cssText.match(/url\(([^()]+)\)/)) { toggle(selected)}
+		//else if (getComputedStyle(selected).cssText.match(/url\(([^()]+)\)/)) {toggle(selected)} // this is for toggling objects that have a image in the CSS, not working well.
+	})
+
+	/* Toggle sub-method - adds forced blur or unblur as appropriate */
+	function toggle (selected) {
+		var cssText = selected.style.cssText
+
+		/* If image is blurred by default --> apply forced unblur */
+		if (settings.status === true && selected.style.filter === "") {
+			selected.style.cssText += ';filter: blur(0px) !important;'		
+		}
+
+		/* If image is shown by default --> apply forced reblur */
+		else if (settings.status === false && selected.style.filter === "") {
+			var blurAmt = "blur(" + settings.blurAmt + "px) "
+			var grayscale = (settings.grayscale == true ? "grayscale(100%) " : "")
+			selected.style.cssText += ';filter: ' + blurAmt + grayscale + ' !important;'		
+		}
+
+
+		/* If image has been force unblured, then force reblur */
+		else if (cssText.substr(cssText.length - 29) === "filter: blur(0px) !important;" ) {
+			var blurAmt = "blur(" + settings.blurAmt + "px) "
+			var grayscale = (settings.grayscale == true ? "grayscale(100%) " : "")
+			selected.style.cssText += ';filter: ' + blurAmt + grayscale + ' !important;'
+		}
+
+		/* If image has been forced reblured, then force unblur */
+		else {
+			selected.style.cssText += ';filter: blur(0px) !important;'
 		}
 	}
 
-	/* If element found, & is hidden element, reveal element: (1) if IMG, IFRAME, VIDEO --> set filter to blur 0px; (2) if DIV, SPAN, A, I --> append !important to background/background-image URL */ 
-	if (selected) {
-		if (selected.nodeName === 'IMG' || selected.nodeName === 'IFRAME' || selected.nodeName === 'VIDEO') { selected.style.cssText += ';filter: blur(0px) !important;' }
-		if (selected.nodeName === 'DIV' || selected.nodeName === 'SPAN' || selected.nodeName === 'A' || selected.nodeName === 'I') { 
-			var hasURL = selected.style.cssText.match(/url\(([^()]+)\)/)
-			var hasImportant = selected.style.cssText.match(/url\(([^(]+)\) !important/)
-			if (hasURL && !hasImportant) {
-				var updatedCSS = selected.style.cssText.replace(/url\(([^()]+)\)/, '$&' + ' !important');
-				selected.style.cssText = updatedCSS 			
-			}
-		}
-	}
 }
 
