@@ -1,6 +1,6 @@
 # Tahir: Avoid haram images/video on the web 😎 
 
-Tahir is a Browser Extension that protects your eyes by automatically blurring all images and videos rendered on any page. Currently Tahir is available for [Chrome](https://chrome.google.com/webstore/detail/tahir/ihmoammkfbdpokfiiifajdkfglmfejca) and [Firefox](https://addons.mozilla.org/en-US/firefox/addon/tahir/). 
+Tahir is a Browser Extension that protects your eyes by automatically blurring images and videos rendered on any page. Currently Tahir is available for [Chrome](https://chrome.google.com/webstore/detail/tahir/ihmoammkfbdpokfiiifajdkfglmfejca) and [Firefox](https://addons.mozilla.org/en-US/firefox/addon/tahir/). 
 
 ### Key Features
 1. Automatically blur all (~95%) images, videos, iframes on a webpage
