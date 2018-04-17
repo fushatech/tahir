@@ -115,44 +115,63 @@ function reverseStatus () {
 /* toggleSelected - (1) Determines objects over hover (2) reverses blur state of objects over hover  */
 function toggleSelected () {
 
-	/* Determine user hover */
-	const hover = document.querySelectorAll( ":hover" );
+	const hover = document.querySelectorAll( ":hover" ); // Determine user hover
+	var imgFoundCSS = false; // Track if image found
 	
-	/* Iterate through all elements under hover. If any element is an (1) IMG, IFRAME, VIDEO or (2) has a in-line background-url --> toggle */
+
+	/* Iterate through all elements under hover. Toggle if contains IMG, IFRAME, VIDEO or inline image. */
 	hover.forEach(function (selected, iterator, array) {
-		if (selected.nodeName === 'IMG' || selected.nodeName === 'IFRAME' || selected.nodeName === 'VIDEO') { toggle(selected) }
-		else if (selected.style.cssText.match(/url\(([^()]+)\)/)) { toggle(selected)}
-		//else if (getComputedStyle(selected).cssText.match(/url\(([^()]+)\)/)) {toggle(selected)} // this is for toggling objects that have a image in the CSS, not working well.
+		toggleIfImg(selected)
 	})
 
-	/* Toggle sub-method - adds forced blur or unblur as appropriate */
+
+	/* toggleIfImg sub-method - If any element is an (1) IMG, IFRAME, VIDEO or (2) has a in-line background-url --> toggle */
+	function toggleIfImg (selected)  {
+		if (selected.nodeName === 'IMG' || selected.nodeName === 'IFRAME' || selected.nodeName === 'VIDEO') { toggle(selected) }
+		else if (selected.style) {
+				if (selected.style.cssText.match(/url\(([^()]+)\)/)) { toggle(selected) }
+		}
+	}
+
+	/* toggle sub-method - adds forced blur or unblur as appropriate */
 	function toggle (selected) {
-		var cssText = selected.style.cssText
 
-		/* If image is blurred by default --> apply forced unblur */
-		if (settings.status === true && selected.style.filter === "") {
-			selected.style.cssText += ';filter: blur(0px) !important;'		
+		/* If this is fist image found */
+		if (imgFoundCSS === false) {
+			var cssText = selected.style.cssText
+
+			/* If image is blurred by default --> apply forced unblur */
+			if (settings.status === true && selected.style.filter === "") {
+				selected.style.cssText += ';filter: blur(0px) !important;'		
+			}
+
+			/* If image is shown by default --> apply forced reblur */
+			else if (settings.status === false && selected.style.filter === "") {
+				var blurAmt = "blur(" + settings.blurAmt + "px) "
+				var grayscale = (settings.grayscale == true ? "grayscale(100%) " : "")
+				selected.style.cssText += ';filter: ' + blurAmt + grayscale + ' !important;'		
+			}
+
+			/* If image has been force unblured, then force reblur */
+			else if (cssText.substr(cssText.length - 29) === "filter: blur(0px) !important;" ) {
+				var blurAmt = "blur(" + settings.blurAmt + "px) "
+				var grayscale = (settings.grayscale == true ? "grayscale(100%) " : "")
+				selected.style.cssText += ';filter: ' + blurAmt + grayscale + ' !important;'
+			}
+
+			/* If image has been forced reblured, then force unblur */
+			else {
+				selected.style.cssText += ';filter: blur(0px) !important;'
+			}
+
+			imgFoundCSS = selected.style.cssText 
 		}
 
-		/* If image is shown by default --> apply forced reblur */
-		else if (settings.status === false && selected.style.filter === "") {
-			var blurAmt = "blur(" + settings.blurAmt + "px) "
-			var grayscale = (settings.grayscale == true ? "grayscale(100%) " : "")
-			selected.style.cssText += ';filter: ' + blurAmt + grayscale + ' !important;'		
-		}
-
-
-		/* If image has been force unblured, then force reblur */
-		else if (cssText.substr(cssText.length - 29) === "filter: blur(0px) !important;" ) {
-			var blurAmt = "blur(" + settings.blurAmt + "px) "
-			var grayscale = (settings.grayscale == true ? "grayscale(100%) " : "")
-			selected.style.cssText += ';filter: ' + blurAmt + grayscale + ' !important;'
-		}
-
-		/* If image has been forced reblured, then force unblur */
+		/* If previous image already found, set this image to same blur to prevent opposite-blur bug (where overlaying & underlying imgs in opposite blur states) */
 		else {
-			selected.style.cssText += ';filter: blur(0px) !important;'
+			selected.style.cssText += ';' + imgFoundCSS.match(/(filter.*$)/)[0]
 		}
+
 	}
 
 }
