@@ -35,6 +35,13 @@ function initPopup () {
       })
     }
   })
+
+  checkForUpdate().then (function (update_status) {
+    if (update_status === true ) { 
+      displayUpdate() 
+    }
+  })
+
 }
 
 
@@ -50,6 +57,14 @@ function getSettings () {
       resolve()
     });   
   });
+}
+
+function checkForUpdate () {
+  return new Promise(function(resolve) {
+    chrome.storage.sync.get(['update'], function(storage) {
+      resolve(storage.update)
+    }); 
+  })
 }
 
 /* displaySettings - Update popup modal with local storage settings */
@@ -75,6 +90,8 @@ function addListeners () {
     document.querySelector("input[name=bgimages]").addEventListener('change', updateBGImages)
     document.querySelector("input[name=videos]").addEventListener('change', updateVideos)
     document.querySelector("input[name=iframes]").addEventListener('change', updateIframes)
+    document.querySelector("div[name=readmore]").addEventListener('click', loadFullUpdateMessage)
+    document.querySelector("div[name=dismiss]").addEventListener('click', dismissUpdate)
 }
 
 
@@ -142,3 +159,21 @@ function sendUpdatedSettings () {
     chrome.tabs.sendMessage(activeTab.id, {"message": settings});
    });
 }
+
+
+function displayUpdate() {
+  document.getElementById('update').style.display = "block"
+}
+
+function loadFullUpdateMessage () {
+  chrome.tabs.create({url: chrome.extension.getURL('update.html')});
+}
+
+function dismissUpdate () {
+  chrome.storage.sync.set({'update': false})
+  chrome.browserAction.setIcon({path: 'assets/img/icon128.png'})
+  document.getElementById('update').style.display = "none" 
+}
+
+
+
