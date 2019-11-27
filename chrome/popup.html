@@ -94,9 +94,48 @@
         font-size: 0.7rem;
       }
 
+      .update {
+        padding: .75rem 1.25rem;
+        border-radius: .25rem;
+        color: green;
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        width: 80%;
+        margin-left: 4%;
+        display: none;
+      }
+
+      .update .title {
+        font-size: 15px;
+        font-weight: 500;
+      }
+
+      .update .read-more {
+        float: left;
+        text-decoration: underline;
+      }
+      .update .dismiss {
+        text-align: right;
+      }
+
     </style> 
   </head>
   <body class="popup">
+
+    <div class="update" id="update">
+      <div class="title">Tahir Update (1.0.4): </div>
+      <div>
+        <ul>
+          <li>Alt+K now un-blurs & re-blurs.</li>
+          <li>Tahir is available on Firefox </li>
+          <li>Several technical improvements</li>
+        </ul>
+      </div>
+      <div class="read-more" name="readmore"><a href="#">Read full update.</a></div>
+      <div class="dismiss" name="dismiss"><a href="#">Dismiss</a></div>
+    </div>
 
     <div class="status">
       <input type="checkbox" id="status" name="status" />

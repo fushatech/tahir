@@ -9,7 +9,7 @@
  */
 
 
-/* On extension installation, create default local storage settings. On extension update, display newtab with latest changes (update.html). */
+/* On extension installation, create default local storage settings. On extension update, set update to true in local storage. */
 chrome.runtime.onInstalled.addListener (function(obj) {
   if (obj.reason === "install") {
     const settings = {'type': 'settings', 'status': true, 'images': true, 'videos': true, 'iframes': true, 'blurAmt': 20, 'grayscale': true, 'bgImages': true}
@@ -17,7 +17,8 @@ chrome.runtime.onInstalled.addListener (function(obj) {
   }
 
   if (obj.reason === 'update') {
-    chrome.tabs.create({url: chrome.extension.getURL('update.html')});
+    chrome.storage.sync.set({'update': true})
+    chrome.browserAction.setIcon({path: 'assets/img/icon_update_128.png'})
   }
 
 });
@@ -28,11 +29,11 @@ chrome.commands.onCommand.addListener(function (command) {
     if (command === "reverse_status") {
         chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
     		chrome.tabs.sendMessage(tabs[0].id, {"message": "reverse_status"});  
-		});
+		  });
     }
     if (command === "toggle_selected") {
     	chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
     		chrome.tabs.sendMessage(tabs[0].id, {"message": "toggle_selected"});  
-		});
+		  });
     }
 });
