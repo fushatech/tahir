@@ -2,30 +2,28 @@
   "name": "Tahir",
   "description": "Avoid haram images & videos on the Internet.",
   "version": "1.0.4",
-  "permissions": [
-  	"storage"
-  ],
+  "permissions": ["storage", "tabs"],
   "browser_action": {
-      "default_title": "Tahir",
-      "default_popup": "popup.html"
+    "default_title": "Tahir",
+    "default_popup": "popup.html"
   },
-  "icons": { 
-    "128": "assets/img/icon128.png" 
+  "icons": {
+    "128": "assets/img/icon128.png"
   },
   "commands": {
     "reverse_status": {
-        "suggested_key": {
-            "default": "Alt+L"
-        },
-        "description": "Reverse blur state"
+      "suggested_key": {
+        "default": "Alt+L"
+      },
+      "description": "Reverse blur state"
     },
     "toggle_selected": {
-        "suggested_key": {
-            "default": "Alt+K"
-        },
-        "description": "Unblur/reblur selected image"
+      "suggested_key": {
+        "default": "Alt+K"
+      },
+      "description": "Unblur/reblur selected image"
     }
-},
+  },
   "background": {
     "scripts": ["background.js"]
   },
