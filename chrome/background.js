@@ -11,7 +11,16 @@
 /* On extension installation, create default local storage settings. On extension update, set update to true in local storage. */
 chrome.runtime.onInstalled.addListener(function(obj) {
   if (obj.reason === "install") {
-    const settings = { type: "settings", status: true, images: true, videos: true, iframes: true, blurAmt: 20, grayscale: true, bgImages: true }
+    const settings = {
+      type: "settings",
+      status: true,
+      images: true,
+      videos: true,
+      iframes: true,
+      blurAmt: 20,
+      grayscale: true,
+      bgImages: true
+    }
     chrome.storage.sync.set({ settings: settings })
   }
 

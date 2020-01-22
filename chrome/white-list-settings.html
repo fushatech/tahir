@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Tahir | Manage White List</title>
+
+    <style media="screen">
+      body {
+        max-width: 960px;
+        margin: 0 auto;
+      }
+
+      .url-list {
+        margin: 0;
+        padding: 0;
+        width: 50%;
+        list-style: none;
+        max-height: 70vh;
+        overflow-y: auto;
+      }
+
+      .url-list li {
+        padding: 8px;
+        margin-bottom: 8px;
+        background: #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .url-list li:last-child {
+        margin-bottom: 0;
+      }
+
+      .url-list li .delete-button {
+        display: inline-block;
+        background-color: #ff6b6b;
+        padding: 4px 8px;
+        border-radius: 4px;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Edit your Tahir white list</h2>
+    <ul class="url-list">
+      <li>www.gmail.com <span class="delete-button">x</span></li>
+      <li>www.outlook.com <span class="delete-button">x</span></li>
+      <li>www.github.com <span class="delete-button">x</span></li>
+      <li>www.stackoverflow.com <span class="delete-button">x</span></li>
+      <li>www.quran.com <span class="delete-button">x</span></li>
+    </ul>
+  </body>
+</html>

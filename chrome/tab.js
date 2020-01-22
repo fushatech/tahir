@@ -92,7 +92,11 @@ function generateCssRules() {
     cssRules += "iframe {filter: " + blurAmt + grayscale + "!important } "
   }
   if (settings.bgImages === true) {
-    cssRules += "div[style*='url'], span[style*='url'], a[style*='url'], i[style*='url'] {filter: " + blurAmt + grayscale + "!important }"
+    cssRules +=
+      "div[style*='url'], span[style*='url'], a[style*='url'], i[style*='url'] {filter: " +
+      blurAmt +
+      grayscale +
+      "!important }"
   }
 
   return cssRules
@@ -129,7 +133,11 @@ function toggleSelected() {
 
   /* toggleIfImg sub-method - If any element is an (1) IMG, IFRAME, VIDEO or (2) has a in-line background-url --> toggle */
   function toggleIfImg(selected) {
-    if (selected.nodeName === "IMG" || selected.nodeName === "IFRAME" || selected.nodeName === "VIDEO") {
+    if (
+      selected.nodeName === "IMG" ||
+      selected.nodeName === "IFRAME" ||
+      selected.nodeName === "VIDEO"
+    ) {
       toggle(selected)
     } else if (selected.style) {
       if (selected.style.cssText.match(/url\(([^()]+)\)/)) {
@@ -151,12 +159,16 @@ function toggleSelected() {
         /* If image is shown by default --> apply forced reblur */
         var blurAmt = "blur(" + settings.blurAmt + "px) "
         var grayscale = settings.grayscale == true ? "grayscale(100%) " : ""
-        selected.style.cssText += ";filter: " + blurAmt + grayscale + " !important;"
-      } else if (cssText.substr(cssText.length - 29) === "filter: blur(0px) !important;") {
+        selected.style.cssText +=
+          ";filter: " + blurAmt + grayscale + " !important;"
+      } else if (
+        cssText.substr(cssText.length - 29) === "filter: blur(0px) !important;"
+      ) {
         /* If image has been force unblured, then force reblur */
         var blurAmt = "blur(" + settings.blurAmt + "px) "
         var grayscale = settings.grayscale == true ? "grayscale(100%) " : ""
-        selected.style.cssText += ";filter: " + blurAmt + grayscale + " !important;"
+        selected.style.cssText +=
+          ";filter: " + blurAmt + grayscale + " !important;"
       } else {
         /* If image has been forced reblured, then force unblur */
         selected.style.cssText += ";filter: blur(0px) !important;"

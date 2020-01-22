@@ -74,7 +74,8 @@ function displaySettings(settings) {
   document.querySelector("input[name=videos]").checked = settings.videos
   document.querySelector("input[name=iframes]").checked = settings.iframes
   document.querySelector("input[name=bluramt]").value = settings.blurAmt
-  document.querySelector("span[name=bluramttext]").innerHTML = settings.blurAmt + "px"
+  document.querySelector("span[name=bluramttext]").innerHTML =
+    settings.blurAmt + "px"
   document.querySelector("input[name=grayscale]").checked = settings.grayscale
   chrome.tabs.query(queryInfo, function(tabs) {
     var tab = tabs[0]
@@ -95,16 +96,39 @@ function displaySettings(settings) {
 
 /* addListeners - (1) Listen for changes to popup modal inputs (2) route to appropriate function  */
 function addListeners() {
-  document.querySelector("input[name=status]").addEventListener("change", updateStatus)
-  document.querySelector("input[name=bluramt]").addEventListener("change", updateBluramt)
-  document.querySelector("input[name=grayscale]").addEventListener("change", updateGrayscale)
-  document.querySelector("input[name=images]").addEventListener("change", updateImages)
-  document.querySelector("input[name=bgimages]").addEventListener("change", updateBGImages)
-  document.querySelector("input[name=videos]").addEventListener("change", updateVideos)
-  document.querySelector("input[name=iframes]").addEventListener("change", updateIframes)
-  document.querySelector("div[name=readmore]").addEventListener("click", loadFullUpdateMessage)
-  document.querySelector("div[name=dismiss]").addEventListener("click", dismissUpdate)
-  document.querySelector("input[name=addtowhitelist]").addEventListener("change", updateWhiteList)
+  document
+    .querySelector("input[name=status]")
+    .addEventListener("change", updateStatus)
+  document
+    .querySelector("input[name=bluramt]")
+    .addEventListener("change", updateBluramt)
+  document
+    .querySelector("input[name=grayscale]")
+    .addEventListener("change", updateGrayscale)
+  document
+    .querySelector("input[name=images]")
+    .addEventListener("change", updateImages)
+  document
+    .querySelector("input[name=bgimages]")
+    .addEventListener("change", updateBGImages)
+  document
+    .querySelector("input[name=videos]")
+    .addEventListener("change", updateVideos)
+  document
+    .querySelector("input[name=iframes]")
+    .addEventListener("change", updateIframes)
+  document
+    .querySelector("div[name=readmore]")
+    .addEventListener("click", loadFullUpdateMessage)
+  document
+    .querySelector("div[name=dismiss]")
+    .addEventListener("click", dismissUpdate)
+  document
+    .querySelector("input[name=addtowhitelist]")
+    .addEventListener("change", updateWhiteList)
+  document
+    .getElementById("manageWhiteList")
+    .addEventListener("click", openWhiteListSettings)
 }
 
 /* updateStatus - (1) Update "status" settings with user input (2) save settings (3) send updated settings to tab.js to modify active tab blur css */
@@ -117,7 +141,8 @@ function updateStatus() {
 /* updateBlurAmt - (1) Update "bluAmt" settings with user input (2) display updated blurAmt on popup modal (3) save settings (4) send updated settings to tab.js to modify active tab blur css */
 function updateBluramt() {
   settings.blurAmt = document.querySelector("input[name=bluramt]").value
-  document.querySelector("span[name=bluramttext]").innerHTML = settings.blurAmt + "px"
+  document.querySelector("span[name=bluramttext]").innerHTML =
+    settings.blurAmt + "px"
   chrome.storage.sync.set({ settings: settings })
   sendUpdatedSettings()
 }
@@ -173,7 +198,9 @@ function updateWhiteList() {
       getSettings().then(function() {
         var urls = settings.whiteList || []
         var index = urls.findIndex(link => link === url)
-        var addToWhiteList = document.querySelector("input[name=addtowhitelist]").checked
+        var addToWhiteList = document.querySelector(
+          "input[name=addtowhitelist]"
+        ).checked
         if (addToWhiteList && index < 0) {
           urls.push(url)
           document.querySelector("input[name=status]").checked = false
@@ -213,4 +240,11 @@ function dismissUpdate() {
   chrome.storage.sync.set({ update: false })
   chrome.browserAction.setIcon({ path: "assets/img/icon128.png" })
   document.getElementById("update").style.display = "none"
+}
+
+function openWhiteListSettings() {
+  alert("Hello")
+  chrome.tabs.create({
+    url: chrome.extension.getURL("white-list-settings.html")
+  })
 }

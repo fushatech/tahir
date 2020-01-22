@@ -6,6 +6,7 @@
     <style media="screen" type="text/css">
       .popup {
         min-width: 320px;
+        font-family: sans-serif;
       }
 
       .title {
@@ -116,6 +117,19 @@
       .update .dismiss {
         text-align: right;
       }
+
+      #manageWhiteList {
+        background-color: white;
+        border: none;
+        cursor: pointer;
+        outline: none;
+      }
+
+      #manageWhiteList svg {
+        position: relative;
+        top: 2px;
+        left: -2px;
+      }
     </style>
   </head>
   <body class="popup">
@@ -128,7 +142,9 @@
           <li>Several technical improvements</li>
         </ul>
       </div>
-      <div class="read-more" name="readmore"><a href="#">Read full update.</a></div>
+      <div class="read-more" name="readmore">
+        <a href="#">Read full update.</a>
+      </div>
       <div class="dismiss" name="dismiss"><a href="#">Dismiss</a></div>
     </div>
 
@@ -142,22 +158,64 @@
     <div class="sub-title"><span>Settings</span></div>
 
     <div class="images-videos-iframes">
-      Images: <input type="checkbox" name="images" /> BG Images: <input type="checkbox" name="bgimages" /> Videos:
-      <input type="checkbox" name="videos" /> iFrames: <input type="checkbox" name="iframes" />
+      Images: <input type="checkbox" name="images" /> BG Images:
+      <input type="checkbox" name="bgimages" /> Videos:
+      <input type="checkbox" name="videos" /> iFrames:
+      <input type="checkbox" name="iframes" />
     </div>
 
-    <div>Blur Amount: <input type="range" min="1" max="50" class="bluramt" name="bluramt" /> <span name="bluramttext"></span></div>
+    <div>
+      Blur Amount:
+      <input type="range" min="1" max="50" class="bluramt" name="bluramt" />
+      <span name="bluramttext"></span>
+    </div>
 
-    <div class="grayscale">Grayscale: <input type="checkbox" name="grayscale" /></div>
     <div class="grayscale">
-      <input type="checkbox" name="addtowhitelist" id="addToWhiteList" /> <label for="addToWhiteList">Add this site to white list</label>
+      Grayscale: <input type="checkbox" name="grayscale" />
+    </div>
+    <div class="grayscale">
+      <input type="checkbox" name="addtowhitelist" id="addToWhiteList" />
+      <label for="addToWhiteList">Add this site to white list</label>
+    </div>
+    <div class="grayscale">
+      <button id="manageWhiteList">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          aria-hidden="true"
+          focusable="false"
+          width="1em"
+          height="1em"
+          style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);"
+          preserveAspectRatio="xMidYMid meet"
+          viewBox="0 0 24 24"
+        >
+          <g
+            fill="none"
+            stroke="#626262"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="3" />
+            <path
+              d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83a2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33a1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2a2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0a2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2a2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83a2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2a2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0a2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2a2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
+            />
+          </g>
+        </svg>
+        Manage white list
+      </button>
     </div>
 
     <div class="sub-title"><span>Shortcuts</span></div>
 
     <div class="shortcuts">
       <div><span>Alt+L: turn on / off </span></div>
-      <div><span>Alt+K: over image to selectively unblur/reblur (close this first)</span></div>
+      <div>
+        <span>
+          Alt+K: over image to selectively unblur/reblur (close this first)
+        </span>
+      </div>
     </div>
   </body>
 </html>
