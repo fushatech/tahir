@@ -3,7 +3,8 @@
   "description": "Avoid haram images & videos on the Internet.",
   "version": "1.0.4",
   "permissions": [
-  	"storage"
+  	"storage",
+    "tabs"
   ],
   "browser_action": {
       "default_title": "Tahir",

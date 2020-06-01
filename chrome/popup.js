@@ -13,6 +13,7 @@
 -------------------------------------------------------------------*/
 
 var settings = null
+var currentDomain = null
 
 initPopup();
 
@@ -77,6 +78,22 @@ function displaySettings (settings) {
   document.querySelector("input[name=bluramt]").value = settings.blurAmt
   document.querySelector("span[name=bluramttext]").innerHTML = settings.blurAmt + "px"
   document.querySelector("input[name=grayscale]").checked = settings.grayscale
+
+
+  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    if (!settings.ignoredDomains) {
+      settings.ignoredDomains = [];
+    }
+
+    var url = new URL(tabs[0].url)
+    currentDomain = url.hostname
+
+    var isWhitelisted = settings.ignoredDomains.indexOf(currentDomain) !== -1;
+
+    document.querySelector('#current-domain').innerHTML = currentDomain;
+    document.querySelector('#btn-whitelist-add').style.display = isWhitelisted ? 'none' : 'initial';
+    document.querySelector('#btn-whitelist-remove').style.display = isWhitelisted ? 'initial' : 'none';
+  });
 }
 
 
@@ -92,6 +109,8 @@ function addListeners () {
     document.querySelector("input[name=iframes]").addEventListener('change', updateIframes)
     document.querySelector("div[name=readmore]").addEventListener('click', loadFullUpdateMessage)
     document.querySelector("div[name=dismiss]").addEventListener('click', dismissUpdate)
+    document.querySelector("#btn-whitelist-add").addEventListener('click', addToWishlist)
+    document.querySelector("#btn-whitelist-remove").addEventListener('click', removeFromWishlist)
 }
 
 
@@ -173,6 +192,28 @@ function dismissUpdate () {
   chrome.storage.sync.set({'update': false})
   chrome.browserAction.setIcon({path: 'assets/img/icon128.png'})
   document.getElementById('update').style.display = "none" 
+}
+
+/* addToWishlist - (1) Adds current domain to ignored domain list */
+function addToWishlist(e) {
+    e.preventDefault();
+    settings.ignoredDomains.push(currentDomain)
+    document.querySelector('#btn-whitelist-add').style.display = 'none';
+    document.querySelector('#btn-whitelist-remove').style.display = 'initial';
+    chrome.storage.sync.set({"settings": settings});
+    sendUpdatedSettings();
+}
+
+/* removeFromWishlist - (1) Removes current domain from ignored domain list */
+function removeFromWishlist(e) {
+    e.preventDefault();
+    settings.ignoredDomains = settings.ignoredDomains.filter(function(d) {
+        return d !== currentDomain
+    });
+    document.querySelector('#btn-whitelist-add').style.display = 'initial';
+    document.querySelector('#btn-whitelist-remove').style.display = 'none';
+    chrome.storage.sync.set({"settings": settings});
+    sendUpdatedSettings();
 }
 
 
