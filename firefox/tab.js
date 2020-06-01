@@ -27,7 +27,9 @@ initTab()
 /* initTab - On document start: (1) gets local storage settings (2) generates & applies blur CSS (3) sets up listeners to receive and act on messages from popup.js/background.js */
 function initTab () {
 	getSettings().then (function () {
-		if (settings.status === true) { injectBlurCSS() }
+		if (settings.status === true && !isDomainIgnored()) {
+			injectBlurCSS()
+		}
 		addListeners()
 	})
 }
@@ -46,6 +48,11 @@ function getSettings () {
 			resolve()
 		});
 	});
+}
+
+function isDomainIgnored() {
+	var list = settings.ignoredDomains || [];
+	return list.indexOf(window.location.host) >= 0;
 }
 
 
@@ -99,7 +106,12 @@ function generateCssRules () {
 function updateCSS (updatedSettings) {
 	settings = updatedSettings
 	removeBlurCSS();
-	if (settings.status === true) { injectBlurCSS() }
+
+	var ignoredDomains = settings.ignoredDomains || [];
+
+	if (settings.status === true && !isDomainIgnored()) {
+		injectBlurCSS()
+	}
 }
 
 
