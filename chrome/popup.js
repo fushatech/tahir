@@ -81,10 +81,6 @@ function displaySettings (settings) {
 
 
   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-    if (!settings.ignoredDomains) {
-      settings.ignoredDomains = [];
-    }
-
     var url = new URL(tabs[0].url)
     currentDomain = url.hostname
 
@@ -109,8 +105,8 @@ function addListeners () {
     document.querySelector("input[name=iframes]").addEventListener('change', updateIframes)
     document.querySelector("div[name=readmore]").addEventListener('click', loadFullUpdateMessage)
     document.querySelector("div[name=dismiss]").addEventListener('click', dismissUpdate)
-    document.querySelector("#btn-whitelist-add").addEventListener('click', addToWishlist)
-    document.querySelector("#btn-whitelist-remove").addEventListener('click', removeFromWishlist)
+    document.querySelector("#btn-whitelist-add").addEventListener('click', addToWhitelist)
+    document.querySelector("#btn-whitelist-remove").addEventListener('click', removeFromWhitelist)
 }
 
 
@@ -194,8 +190,8 @@ function dismissUpdate () {
   document.getElementById('update').style.display = "none" 
 }
 
-/* addToWishlist - (1) Adds current domain to ignored domain list */
-function addToWishlist(e) {
+/* addToWhitelist - (1) Adds current domain to ignored domain list */
+function addToWhitelist(e) {
     e.preventDefault();
     settings.ignoredDomains.push(currentDomain)
     document.querySelector('#btn-whitelist-add').style.display = 'none';
@@ -204,8 +200,8 @@ function addToWishlist(e) {
     sendUpdatedSettings();
 }
 
-/* removeFromWishlist - (1) Removes current domain from ignored domain list */
-function removeFromWishlist(e) {
+/* removeFromWhitelist - (1) Removes current domain from ignored domain list */
+function removeFromWhitelist(e) {
     e.preventDefault();
     settings.ignoredDomains = settings.ignoredDomains.filter(function(d) {
         return d !== currentDomain

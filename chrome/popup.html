@@ -76,6 +76,10 @@
           visibility: hidden; 
         }
 
+      .bluramt-container {
+        margin-top: 8px;
+      }
+
       .bluramt {
         height: 8.4px;
       }
@@ -87,6 +91,15 @@
 
       .grayscale {
         margin-top: 4px;
+        margin-bottom: 4px;
+      }
+
+      .whitelist-container {
+        margin-top: 8px;
+      }
+
+      .whitelist-domains {
+        margin-left: 15px;
       }
 
       .shortcuts {
@@ -128,7 +141,8 @@
       <div class="title">Tahir Update (1.0.4): </div>
       <div>
         <ul>
-          <li>Alt+K now un-blurs & re-blurs.</li>
+          <li>Alt+K now un-blurs & re-blurs an img.</li>
+          <li>Add websites to whitelist/exception list</li>
           <li>Tahir is available on Firefox </li>
           <li>Several technical improvements</li>
         </ul>
@@ -144,11 +158,6 @@
 
     <h1 class="title">Tahir</h1>
 
-    <div>
-      <span id="current-domain"></span>
-      <a href="#" id="btn-whitelist-add" style="display: none">Add to whitelist</a>
-      <a href="#" id="btn-whitelist-remove" style="display: none">Remove from whitelist</a>
-    </div>
 
     <div class="sub-title"><span>Settings</span></div>
 
@@ -159,12 +168,21 @@
       iFrames: <input type="checkbox" name="iframes" /> 
     </div>
 
-    <div>
+    <div class="bluramt-container">
       Blur Amount: <input type="range" min="1" max="50" class="bluramt" name="bluramt" />  <span name="bluramttext"></span>
     </div>
 
     <div class="grayscale">
       Grayscale: <input type="checkbox" name="grayscale" />
+    </div>
+
+    <div class="whitelist-container">
+      Whitelist:
+      <div class="whitelist-domains">
+        <span id="current-domain"></span>
+        <a href="#" id="btn-whitelist-add" style="display: none">add to whitelist</a>
+        <a href="#" id="btn-whitelist-remove" style="display: none">remove from whitelist</a>
+      </div>
     </div>
 
     <div class="sub-title"><span>Shortcuts</span></div>

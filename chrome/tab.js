@@ -51,7 +51,7 @@ function getSettings () {
 }
 
 function isDomainIgnored() {
-	var list = settings.ignoredDomains || [];
+	var list = settings.ignoredDomains;
 	return list.indexOf(window.location.host) >= 0;
 }
 
@@ -107,7 +107,7 @@ function updateCSS (updatedSettings) {
 	settings = updatedSettings
 	removeBlurCSS();
 
-	var ignoredDomains = settings.ignoredDomains || [];
+	var ignoredDomains = settings.ignoredDomains;
 
 	if (settings.status === true && !isDomainIgnored()) {
 		injectBlurCSS()
