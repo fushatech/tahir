@@ -13,7 +13,7 @@
 /*------------------------------------------------------------------
   Initialize Defaults & Add Listeners
 -------------------------------------------------------------------*/
-
+ 
 var settings = null
 
 initTab()
@@ -24,20 +24,20 @@ initTab()
   Implementation -- Main Wrapper Function
 -------------------------------------------------------------------*/
 
-/* initTab - On document start: (1) gets local storage settings (2) generates & applies blur CSS (3) sets up listeners to receive and act on messages from popup.js/background.js */
+/* initTab - On document start: (1) gets local storage settings (2) generates & applies blur CSS (3) sets up listeners to receive and act on messages from popup.js/background.js */ 
 function initTab () {
 	getSettings().then (function () {
 		if (settings.status === true && !isDomainIgnored()) {
 			injectBlurCSS()
 		}
-		addListeners()
+		addListeners() 
 	})
 }
 
 
 
 /*------------------------------------------------------------------
-  Implementation -- Helper Functions
+  Implementation -- Helper Functions 
 -------------------------------------------------------------------*/
 
 /* getSettings - (1) Gets local storage settings, (2) sets local settings var to local storage settings, (3) resolves promise when complete  */
@@ -46,12 +46,12 @@ function getSettings () {
 		browser.storage.sync.get(['settings'], function(storage) {
 			settings = storage.settings
 			resolve()
-		});
+		});		
 	});
 }
 
 function isDomainIgnored() {
-	var list = settings.ignoredDomains || [];
+	var list = settings.ignoredDomains;
 	return list.indexOf(window.location.host) >= 0;
 }
 
@@ -64,7 +64,7 @@ function addListeners () {
 	    else if (request.message === 'toggle_selected') { toggleSelected() }
 	    else if (request.message.type === 'settings') { updateCSS(request.message) }
 	  }
-	);
+	);	
 }
 
 
@@ -73,7 +73,7 @@ function injectBlurCSS () {
 	const style = document.createElement("style");
 	style.type = 'text/css';
 	style.rel = 'stylesheet';
-	style.id = "tahir"
+	style.id = "tahir" 
 	style.innerHTML = generateCssRules();
 	style.async = false;
 	document.documentElement.appendChild (style);
@@ -83,7 +83,7 @@ function injectBlurCSS () {
 /* removeBlurCSS - Removes injected blur CSS */
 function removeBlurCSS () {
 	const css = document.getElementById("tahir");
-	if (css) { css.parentNode.removeChild(css); }
+	if (css) { css.parentNode.removeChild(css); }	
 }
 
 
@@ -107,7 +107,7 @@ function updateCSS (updatedSettings) {
 	settings = updatedSettings
 	removeBlurCSS();
 
-	var ignoredDomains = settings.ignoredDomains || [];
+	var ignoredDomains = settings.ignoredDomains;
 
 	if (settings.status === true && !isDomainIgnored()) {
 		injectBlurCSS()
@@ -119,8 +119,8 @@ function updateCSS (updatedSettings) {
 function reverseStatus () {
 	settings.status = !settings.status
 	browser.storage.sync.set({"settings": settings})
-	removeBlurCSS();
-	if (settings.status === true) { injectBlurCSS() }
+	removeBlurCSS();		
+	if (settings.status === true) { injectBlurCSS() }		 
 }
 
 
