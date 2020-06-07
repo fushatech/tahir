@@ -1,10 +1,10 @@
 {
   "name": "Tahir",
   "description": "Avoid haram images & videos on the Internet.",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "permissions": [
   	"storage",
-    "tabs"
+    "activeTab"
   ],
   "browser_action": {
       "default_title": "Tahir",
