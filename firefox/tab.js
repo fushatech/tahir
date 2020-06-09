@@ -61,6 +61,7 @@ function addListeners () {
 	browser.runtime.onMessage.addListener(
 	  function(request, sender, sendResponse) {
 	    if (request.message === 'reverse_status') { reverseStatus() }
+	    else if (request.message === 'reverse_status_temp') { reverseStatusTemp() }	
 	    else if (request.message === 'toggle_selected') { toggleSelected() }
 	    else if (request.message.type === 'settings') { updateCSS(request.message) }
 	  }
@@ -121,6 +122,13 @@ function reverseStatus () {
 	browser.storage.sync.set({"settings": settings})
 	removeBlurCSS();		
 	if (settings.status === true) { injectBlurCSS() }		 
+}
+
+/* reverseStatusTemp  */
+function reverseStatusTemp () {
+	const tahir_css = document.getElementById("tahir");
+	if (tahir_css) { removeBlurCSS() }
+	else { injectBlurCSS() }
 }
 
 

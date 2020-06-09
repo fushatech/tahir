@@ -37,6 +37,11 @@ browser.commands.onCommand.addListener(function (command) {
         browser.tabs.sendMessage(tabs[0].id, {"message": "reverse_status"});  
       });
     }
+    if (command === "reverse_status_temp") {
+        browser.tabs.query({active: true, currentWindow: true}, function(tabs){
+        browser.tabs.sendMessage(tabs[0].id, {"message": "reverse_status_temp"});  
+      });
+    }
     if (command === "toggle_selected") {
       browser.tabs.query({active: true, currentWindow: true}, function(tabs){
         browser.tabs.sendMessage(tabs[0].id, {"message": "toggle_selected"});  
