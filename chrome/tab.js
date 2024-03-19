@@ -65,6 +65,20 @@ function addListeners () {
 	    else if (request.message.type === 'settings') { updateCSS(request.message) }
 	  }
 	);	
+	});
+
+	//Track ALT/OPTION key state
+	document.addEventListener('keydown', function (event) {
+		if (event.key === 'Alt') {
+			altKeyPressed = true;
+		}
+	});
+
+	document.addEventListener('keyup', function (event) {
+		if (event.key === 'Alt') {
+			altKeyPressed = false;
+		}
+	});
 }
 
 
