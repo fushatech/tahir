@@ -56,6 +56,9 @@ function isDomainIgnored() {
 }
 
 
+var lastTargetElement = null;
+var lastTargetElementCss = null;
+
 /* addListeners - (1) adds message listeners to receive specific messages from popup.js (popup modal) & background.js (key commands) & (2) routes to appropriate functions on receipt */
 function addListeners () {
 	chrome.runtime.onMessage.addListener(
