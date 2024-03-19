@@ -65,6 +65,32 @@ function addListeners () {
 	    else if (request.message.type === 'settings') { updateCSS(request.message) }
 	  }
 	);	
+	//Track mouse event
+	document.addEventListener('mouseover', function (event) {
+		if (!altKeyPressed || settings.status === false) {
+			if (lastTargetElement != null) {
+				lastTargetElement.style.cssText = lastTargetElementCss;
+				lastTargetElement = null;
+			}
+			return;
+		}
+
+		//If target is an image or video
+		if (event && event.target && (["IMG", "IFRAME", "VIDEO"].includes(event.target.nodeName))) {
+			//If a new hover item found, put back previous css
+			if (lastTargetElement != null) {
+				lastTargetElement.style.cssText = lastTargetElementCss;
+			}
+			//save current element and it's css for putting back
+			lastTargetElement = event.target;
+			lastTargetElementCss = event.target.style.cssText;
+			toggleIfImg(event.target);
+		}
+		//Invalid target or not a image/video
+		else if (lastTargetElement != null) {
+			lastTargetElement.style.cssText = lastTargetElementCss;
+			lastTargetElement = null;
+		}
 	});
 
 	//Track ALT/OPTION key state
