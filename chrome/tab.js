@@ -56,88 +56,44 @@ function isDomainIgnored() {
 }
 
 
-var lastTargetElement = null;
-var lastTargetElementCss = null;
-
 /* addListeners - (1) adds message listeners to receive specific messages from popup.js (popup modal) & background.js (key commands) & (2) routes to appropriate functions on receipt */
-function addListeners() {
+function addListeners () {
 	chrome.runtime.onMessage.addListener(
-		function (request, sender, sendResponse) {
-			if (request.message === 'reverse_status') { reverseStatus() }
-			else if (request.message === 'toggle_selected') { toggleSelected() }
-			else if (request.message.type === 'settings') { updateCSS(request.message) }
-		}
-	);
-
-	//Track mouse event
-	document.addEventListener('mouseover', function (event) {
-		if (!altKeyPressed || settings.status === false) {
-			if (lastTargetElement != null) {
-				lastTargetElement.style.cssText = lastTargetElementCss;
-				lastTargetElement = null;
-			}
-			return;
-		}
-
-		//If target is an image or video
-		if (event && event.target && (["IMG", "IFRAME", "VIDEO"].includes(event.target.nodeName))) {
-			//If a new hover item found, put back previous css
-			if (lastTargetElement != null) {
-				lastTargetElement.style.cssText = lastTargetElementCss;
-			}
-			//save current element and it's css for putting back
-			lastTargetElement = event.target;
-			lastTargetElementCss = event.target.style.cssText;
-			toggleIfImg(event.target);
-		}
-		//Invalid target or not a image/video
-		else if (lastTargetElement != null) {
-			lastTargetElement.style.cssText = lastTargetElementCss;
-			lastTargetElement = null;
-		}
-	});
-
-	//Track ALT/OPTION key state
-	document.addEventListener('keydown', function (event) {
-		if (event.key === 'Alt') {
-			altKeyPressed = true;
-		}
-	});
-
-	document.addEventListener('keyup', function (event) {
-		if (event.key === 'Alt') {
-			altKeyPressed = false;
-		}
-	});
+	  function(request, sender, sendResponse) {
+	    if (request.message === 'reverse_status') { reverseStatus() }
+	    else if (request.message === 'toggle_selected') { toggleSelected() }
+	    else if (request.message.type === 'settings') { updateCSS(request.message) }
+	  }
+	);	
 }
 
 
 /* injectBlurCSS - Appends generated blur CSS to head */
-function injectBlurCSS() {
+function injectBlurCSS () {
 	const style = document.createElement("style");
 	style.type = 'text/css';
 	style.rel = 'stylesheet';
-	style.id = "tahir"
+	style.id = "tahir" 
 	style.innerHTML = generateCssRules();
 	style.async = false;
-	document.documentElement.appendChild(style);
+	document.documentElement.appendChild (style);
 }
 
 
 /* removeBlurCSS - Removes injected blur CSS */
-function removeBlurCSS() {
+function removeBlurCSS () {
 	const css = document.getElementById("tahir");
-	if (css) { css.parentNode.removeChild(css); }
+	if (css) { css.parentNode.removeChild(css); }	
 }
 
 
 /* generateCssRules - Generates custom blur CSS based on user local storage settings */
-function generateCssRules() {
+function generateCssRules () {
 	var cssRules = "";
 	var blurAmt = "blur(" + settings.blurAmt + "px) "
 	var grayscale = (settings.grayscale == true ? "grayscale(100%) " : "")
 
-	if (settings.images === true) { cssRules += "img {filter: " + blurAmt + grayscale + "!important } " }
+	if (settings.images === true) { cssRules += "img {filter: " + blurAmt + grayscale + "!important } "   }
 	if (settings.videos === true) { cssRules += "video {filter: " + blurAmt + grayscale + "!important } " }
 	if (settings.iframes === true) { cssRules += "iframe {filter: " + blurAmt + grayscale + "!important } " }
 	if (settings.bgImages === true) { cssRules += "div[style*='url'], span[style*='url'], a[style*='url'], i[style*='url'] {filter: " + blurAmt + grayscale + "!important }" }
