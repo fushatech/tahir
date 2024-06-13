@@ -24,7 +24,7 @@ chrome.runtime.onInstalled.addListener (function(obj) {
     });   
 
     chrome.storage.sync.set({'update': true})
-    chrome.browserAction.setIcon({path: 'assets/img/icon_update_128.png'})
+    chrome.action.setIcon({path: 'assets/img/icon_update_128.png'})
   }
 
 });
