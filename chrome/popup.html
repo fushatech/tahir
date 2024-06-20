@@ -2,7 +2,6 @@
 <html>
   <head>
     <title>Tahir</title>
-    <script src="popup.js"></script>  
     <style media="screen" type="text/css">
 
       .popup {
@@ -163,10 +162,10 @@
     <div class="sub-title"><span>Settings</span></div>
 
     <div class="images-videos-iframes">
-      Images: <input type="checkbox" name="images" /> 
-      BG Images: <input type="checkbox" name="bgimages" />
-      Videos: <input type="checkbox" name="videos" /> 
-      iFrames: <input type="checkbox" name="iframes" /> 
+      <label for="chk-images">Images:</label> <input type="checkbox" id="chk-images" name="images" />
+      <label for="chk-bg">BG Images:</label> <input type="checkbox" id="chk-bg" name="bgimages" />
+      <label for="chk-videos">Videos:</label> <input type="checkbox" id="chk-videos" name="videos" />
+      <label for="chk-iframes">iFrames:</label> <input type="checkbox" id="chk-iframes" name="iframes" />
     </div>
 
     <div class="bluramt-container">
@@ -192,6 +191,6 @@
       <div><span>Alt+L: turn on / off </span></div>
       <div><span>Alt+K: over image to selectively unblur/reblur (close this first)</span></div>
     </div>
-    
+    <script type="text/javascript" src="popup.js"></script>
   </body>
 </html>
