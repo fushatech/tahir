@@ -15,8 +15,9 @@
 var settings = null
 var currentDomain = null
 
-initPopup();
-
+document.addEventListener('DOMContentLoaded', function() {
+    initPopup();
+});
 
 /*------------------------------------------------------------------
   Implementation -- Main Functions
@@ -181,12 +182,12 @@ function displayUpdate() {
 }
 
 function loadFullUpdateMessage () {
-  chrome.tabs.create({url: chrome.extension.getURL('update.html')});
+  chrome.tabs.create({url: chrome.runtime.getURL('update.html')});
 }
 
 function dismissUpdate () {
   chrome.storage.sync.set({'update': false})
-  chrome.browserAction.setIcon({path: 'assets/img/icon128.png'})
+  chrome.action.setIcon({path: 'assets/img/icon128.png'})
   document.getElementById('update').style.display = "none" 
 }
 
