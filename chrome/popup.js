@@ -171,8 +171,14 @@ function updateBGImages () {
 /* sendUpdatedSettings - Send updated settings object to tab.js to modify active tab blur CSS */
 function sendUpdatedSettings () {
     chrome.tabs.query({currentWindow: true, active: true}, function (tabs){
-    var activeTab = tabs[0];
-    chrome.tabs.sendMessage(activeTab.id, {"message": settings});
+      if (tabs.length === 0) {
+        return;
+      }
+
+      var activeTab = tabs[0];
+      chrome.tabs.sendMessage(activeTab.id, {"message": settings}).catch(() => {
+          console.log('Error sending message to tab.js');
+      });
    });
 }
 
